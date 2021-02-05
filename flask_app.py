@@ -16,7 +16,7 @@ app = Flask(__name__)
 #desa
 #app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymsql://root:123456@localhost/veterinaria'
 #prod
-app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://jemmyperez:AhNaTcIk28@jemmyperez.mysql.pythonanywhere-services.com/veterinaria'
+app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://jemmyperez:AhNaTcIk28@jemmyperez.mysql.pythonanywhere-services.com/jemmyperez$veterinaria'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
