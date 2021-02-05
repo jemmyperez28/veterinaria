@@ -4,12 +4,42 @@ from functools import wraps
 from flask import Flask, request, jsonify, _request_ctx_stack
 from flask_cors import cross_origin
 from jose import jwt
+from flask_marshmallow import Marshmallow
+from flask_sqlalchemy import SQLAlchemy
 
 AUTH0_DOMAIN = 'dev-ol5qr49m.us.auth0.com'
 API_AUDIENCE = "https://petclinic.pe"
 ALGORITHMS = ["RS256"]
 
 app = Flask(__name__)
+
+#desa
+#app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymsql://root:123456@localhost/veterinaria'
+#prod
+app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://jemmyperez:AhNaTcIk28@jemmyperez.mysql.pythonanywhere-services.com/veterinaria'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
+db = SQLAlchemy(app)
+ma = Marshmallow(app)
+#Modelos
+class Usuario(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(255))
+    email = db.Column(db.String(120),unique = True , nullable=False)
+    password = db.Column(db.String(255))
+
+    def __ini__(self,name,email,password):
+        self.name = name
+        self.email = email 
+        self.password = password 
+    
+db.create_all()
+
+class UsuarioSchema(ma.Schema):
+    class Meta:
+        fields = ('id','name','email','password')
+
+Usuario_Schema = UsuarioSchema()
+Usuarios_Schema = UsuarioSchema(many=True)
 
 # Error handler
 class AuthError(Exception):
@@ -119,6 +149,14 @@ def public():
     response = "Hello from a public endpoint! You don't need to be authenticated to see this."
     return jsonify(message=response)
 
+
+#Rutas Test
+
+@app.route("/api/usuarios", methods=['POST'])
+def create_usuario():
+    print(request.json)
+    return 'recibido'
+
 # This needs authentication
 @app.route("/api/private")
 @cross_origin(headers=["Content-Type", "Authorization"])
@@ -139,7 +177,6 @@ def private_scoped():
         "code": "Unauthorized",
         "description": "You don't have access to this resource"
     }, 403)
-
 
 #Para Desarrollo
 #if __name__ == '__main__':
