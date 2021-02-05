@@ -4,8 +4,11 @@ from functools import wraps
 from flask import Flask, request, jsonify, _request_ctx_stack
 from flask_cors import cross_origin
 from jose import jwt
-from flask_marshmallow import Marshmallow
-from flask_sqlalchemy import SQLAlchemy
+
+from models import db , Usuario
+from schemas import ma ,UsuarioSchema
+from flask_migrate import Migrate
+
 
 AUTH0_DOMAIN = 'dev-ol5qr49m.us.auth0.com'
 API_AUDIENCE = "https://petclinic.pe"
@@ -14,32 +17,23 @@ ALGORITHMS = ["RS256"]
 app = Flask(__name__)
 
 #desa
-#app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymsql://root:123456@localhost/veterinaria'
+#app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:123456@localhost/veterinaria'
 #prod
 app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://jemmyperez:AhNaTcIk28@jemmyperez.mysql.pythonanywhere-services.com/jemmyperez$veterinaria'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
-db = SQLAlchemy(app)
-ma = Marshmallow(app)
-#Modelos
-class Usuario(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(255))
-    email = db.Column(db.String(120),unique = True , nullable=False)
-    password = db.Column(db.String(255))
 
-    def __ini__(self,name,email,password):
-        self.name = name
-        self.email = email 
-        self.password = password 
-    
-db.create_all()
+db.init_app(app)
+ma.init_app(app)
+migrate = Migrate(app, db)
 
-class UsuarioSchema(ma.Schema):
-    class Meta:
-        fields = ('id','name','email','password')
+#db = SQLAlchemy(app)
+#ma = Marshmallow(app)
 
 Usuario_Schema = UsuarioSchema()
 Usuarios_Schema = UsuarioSchema(many=True)
+
+
 
 # Error handler
 class AuthError(Exception):
@@ -143,19 +137,73 @@ def requires_scope(required_scope):
                     return True
     return False
 
+
+#Rutas Test
+@app.route('/usuarios', methods=['POST'])
+@cross_origin(headers=["Content-Type", "Authorization"])
+@requires_auth
+def create_usuario():
+
+    name = request.json['name']
+    email = request.json['email']
+    password = request.json['password']
+    nuevo_usuario = Usuario(name,email,password)
+    db.session.add(nuevo_usuario)
+    db.session.commit()
+    return Usuario_Schema.jsonify(nuevo_usuario)
+
+
+@app.route('/usuarios' , methods=['GET'])
+@cross_origin(headers=["Content-Type", "Authorization"])
+@requires_auth
+def get_usuarios():
+        all_usuarios = Usuario.query.all()
+        result = Usuarios_Schema.dump(all_usuarios)
+        return jsonify(result)
+
+
+@app.route('/usuarios/<id>', methods=['GET'])
+@cross_origin(headers=["Content-Type", "Authorization"])
+@requires_auth
+def get_usuario(id):
+    #usuario = Usuario.query.get(id)
+    #return Usuario_schema.jsonify(usuario)
+    usuario = Usuario.query.get(id)
+    result = Usuario_Schema.dump(usuario)
+    return jsonify(result)
+
+@app.route('/usuarios/<id>', methods=['PUT'])
+@cross_origin(headers=["Content-Type", "Authorization"])
+@requires_auth
+def update_usuario(id):
+    user = Usuario.query.get(id)
+    name = request.json['name']
+    email = request.json['email']
+    password = request.json['password']
+    
+    #actualizo campos
+    user.name = name
+    db.session.commit()
+    return Usuario_Schema.jsonify(user)
+
+@app.route('/usuarios/<id>', methods=['DELETE'])
+@cross_origin(headers=["Content-Type", "Authorization"])
+@requires_auth
+def delete_usuario(id):
+    user = Usuario.query.get(id)
+    print(user)
+    db.session.delete(user)
+    db.session.commit()
+
+    return Usuario_Schema.jsonify(user)
+    
+
 @app.route("/api/public")
 @cross_origin(headers=["Content-Type", "Authorization"])
 def public():
     response = "Hello from a public endpoint! You don't need to be authenticated to see this."
     return jsonify(message=response)
 
-
-#Rutas Test
-
-@app.route("/api/usuarios", methods=['POST'])
-def create_usuario():
-    print(request.json)
-    return 'recibido'
 
 # This needs authentication
 @app.route("/api/private")
