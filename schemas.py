@@ -3,7 +3,7 @@ ma = Marshmallow()
 
 class UsuarioSchema(ma.Schema):
     class Meta:
-        fields = ('id','name','email','phone','pais','provincia','ciudad','distrito','direccion','role','fecha_registro')
+        fields = ('id','name','email','phone','pais','provincia','ciudad','distrito','direccion','role','fecha_registro','auth0id')
 
 class VeterinariaSchema(ma.Schema):
     class Meta:

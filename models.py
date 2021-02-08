@@ -18,7 +18,8 @@ class Usuario(db.Model):
     pets = db.relationship('Pet',backref='pet_id')
     uservets = db.relationship('UserVet',backref='pet_id')
     fecha_registro = db.Column(db.DateTime,default=datetime.utcnow)
-    def __init__(self,name,email,phone,pais,provincia,ciudad,distrito,direccion,role,fecha_registro):
+    auth0id = db.Column(db.String(255),unique=True,nullable=False)
+    def __init__(self,name,email,phone,pais,provincia,ciudad,distrito,direccion,role,fecha_registro,auth0id):
         self.name = name
         self.email = email 
         self.phone = phone 
@@ -29,6 +30,7 @@ class Usuario(db.Model):
         self.direccion = direccion 
         self.role = role 
         self.fecha_registro= fecha_registro
+        self.auth0id = auth0id
 
 
 class Pet(db.Model):

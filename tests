@@ -1,0 +1,53 @@
+#Pets
+Get all pets 
+GET jemmyperez.pythonanywhere.com/pets 
+
+Get pet by id.
+GET jemmyperez.pythonanywhere.com/pets/1 
+
+Insert Pet #owner:Usuario.id
+POST jemmyperez.pythonanywhere.com/pets
+{
+    "birthdate": null,
+    "bread": "bread",
+    "color": "blanco",
+    "name": "GAB MASCOTA",
+    "owner": 2               
+}
+
+PUT jemmyperez.pythonanywhere.com/pets
+Update Pet: 
+{
+    "birthdate": null,
+    "bread": "actualizado",
+    "color": "ACTUALIZADO",
+    "name": "GAB MASCOTA ACTUALIZADO",
+    "owner": 2 
+}
+
+#Veterinaria 
+Get all veterinaria.
+GET jemmyperez.pythonanywhere.com/veterinarias
+
+Get veterinaria by id.
+GET jemmyperez.pythonanywhere.com/veterinarias/1
+
+Insert Veterinaria.
+POST jemmyperez.pythonanywhere.com/veterinarias
+id_usurio : Usuario.id
+{
+    "name" : "Nueva veterinaria",
+    "logo" : "teeeeeeeeeeeeeeeexto",
+    "ruc": "4561235",
+    "Address": "av xd",
+    "Distrito": "sjl xd ",
+    "ciudad": "xd",
+    "fecha_registro": null,
+    "pais": "peru",
+    "provincia": "432424",
+    "status": 1,
+    "telefono": "123123",
+    "whatsapp": "123123",
+    "id_usuario" : 2
+}
+

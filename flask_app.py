@@ -188,9 +188,9 @@ def create_usuario():
     direccion = request.json['direccion']
     role = request.json['role']
     fecha_registro  = request.json['fecha_registro'] 
-    nuevo_usuario = Usuario(name,email,phone,pais,provincia,ciudad,distrito,direccion,role,fecha_registro)
+    auth0id = request.json['auth0id']
+    nuevo_usuario = Usuario(name,email,phone,pais,provincia,ciudad,distrito,direccion,role,fecha_registro,auth0id)
                        
-
     try:
         db.session.add(nuevo_usuario)
         db.session.commit()
