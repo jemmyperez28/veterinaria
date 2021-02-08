@@ -17,7 +17,7 @@ class Usuario(db.Model):
     role = db.Column(db.Integer, nullable=False)
     pets = db.relationship('Pet',backref='pet_id')
     uservets = db.relationship('UserVet',backref='pet_id')
-    fecha_registro = db.Column(db.DateTime,  server_default=func.sysdate())
+    fecha_registro = db.Column(db.DateTime,default=datetime.utcnow)
     def __init__(self,name,email,phone,pais,provincia,ciudad,distrito,direccion,role,fecha_registro):
         self.name = name
         self.email = email 
