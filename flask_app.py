@@ -297,7 +297,7 @@ def delete_usuario(id):
 @requires_auth
 def create_pet():
     name = request.json['name']
-    age = request.json['age']    
+    birthdate = request.json['birthdate']    
     color = request.json['color']
     bread = request.json['bread']
     owner = request.json['owner']  

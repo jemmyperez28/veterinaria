@@ -11,7 +11,7 @@ class VeterinariaSchema(ma.Schema):
 
 class PetSchema(ma.Schema):
     class Meta: 
-        fields = ('id','name','age','color','bread','owner')   
+        fields = ('id','name','birthdate','color','bread','owner')   
 
 class UserVetSchema(ma.Schema):
     class Meta:

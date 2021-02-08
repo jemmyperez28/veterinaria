@@ -34,7 +34,7 @@ class Usuario(db.Model):
 class Pet(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     name = db.Column(db.String(255))
-    age = db.Column(db.Integer)    
+    birthdate = db.Column(db.DateTime)    
     color = db.Column(db.String(25))
     bread = db.Column(db.String(55))
     owner = db.Column(db.Integer,db.ForeignKey('usuario.id')) 
