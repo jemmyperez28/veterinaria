@@ -301,7 +301,7 @@ def create_pet():
     color = request.json['color']
     bread = request.json['bread']
     owner = request.json['owner']  
-    nuevo_pet = Pet(name,age,color,bread,owner)
+    nuevo_pet = Pet(name,birthdate,color,bread,owner)
 
     try:
         db.session.add(nuevo_pet)
@@ -347,14 +347,14 @@ def get_pet(id):
 def update_pet(id):
     pet = Pet.query.get(id)
     name = request.json['name']
-    age = request.json['age']    
+    birthdate = request.json['birthdate']    
     color = request.json['color']
     bread = request.json['bread']
     owner = request.json['owner'] 
 
     #actualizo campos
     pet.name = name
-    pet.age = age
+    pet.birthdate = birthdate
     pet.color = color
     pet.bread = bread
     pet.owner = owner
