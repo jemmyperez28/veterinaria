@@ -1,8 +1,9 @@
-from flask_sqlalchemy import SQLAlchemy
+#from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, DateTime , func 
 from datetime import datetime
+from config.db import db
 
-db = SQLAlchemy()
+#db = SQLAlchemy()
 #Modelos
 class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -32,19 +33,20 @@ class Usuario(db.Model):
         self.fecha_registro= fecha_registro
         self.auth0id = auth0id
 
-
 class Pet(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     name = db.Column(db.String(255))
     birthdate = db.Column(db.DateTime)    
     color = db.Column(db.String(25))
     bread = db.Column(db.String(55))
+    photo = db.Column(db.String(255))
     owner = db.Column(db.Integer,db.ForeignKey('usuario.id')) 
-    def __init__(self,name,age,color,bread,owner):
-        self.name= name
-        self.age= age   
+    def __init__(self,name,birthdate,color,bread,photo,owner):
+        self.name= name 
+        self.birthdate= birthdate
         self.color= color   
         self.bread= bread   
+        self.photo= photo
         self.owner= owner          
 
 class Veterinaria(db.Model):

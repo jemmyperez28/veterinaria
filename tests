@@ -1,7 +1,4 @@
 #Pets
-Get all pets 
-GET jemmyperez.pythonanywhere.com/pets 
-
 Get pet by id.
 GET jemmyperez.pythonanywhere.com/pets/1 
 
@@ -15,15 +12,16 @@ POST jemmyperez.pythonanywhere.com/pets
     "owner": 2               
 }
 
-PUT jemmyperez.pythonanywhere.com/pets
+PUT jemmyperez.pythonanywhere.com/pets/3
+3=idMascota
 Update Pet: 
 {
     "birthdate": null,
     "bread": "actualizado",
     "color": "ACTUALIZADO",
-    "name": "GAB MASCOTA ACTUALIZADO",
-    "owner": 2 
+    "name": "GAB MASCOTA 222ACTUALIZADO"
 }
+
 
 #Veterinaria 
 Get all veterinaria.
@@ -51,3 +49,94 @@ id_usurio : Usuario.id
     "id_usuario" : 2
 }
 
+#UserVet
+#Veterinarias que pertenecen a un Usuario
+GET jemmyperez.pythonanywhere.com/uservet/2
+# 2 = User.id 
+jemmyperez.pythonanywhere.com/uservet/2 
+
+
+#Services
+INSERT SERVICIO  
+POST jemmyperez.pythonanywhere.com/servicios
+#idvet : ID DE VETERINARIA 
+    {
+        "foto": "nueva foto ",
+        "idvet": 1,
+        "nombre": "ducha full pack 123123",
+        "precio": 7.552,
+        "tipo": "baños"
+    }
+
+SERVICIOS DE LA VETERINARIA POR VETERINARIA.ID 
+#2=Veterinaria.ID 
+GET jemmyperez.pythonanywhere.com/servicios/2
+
+UPDATE SERVICIO 
+PUT  jemmyperez.pythonanywhere.com/servicios/2
+#2 = Servicio.id 
+ {
+        "foto": "actualizado",
+        "nombre": "ducha actualizadaaa",
+        "precio": 8.5,
+        "tipo": "duchas1231"
+    }
+
+
+#Usuarios 
+Get all users 
+GET jemmyperez.pythonanywhere.com/usuarios 
+
+Get user by id 
+GET jemmyperez.pythonanywhere.com/usuarios/2
+
+Insert user 
+POST jemmyperez.pythonanywhere.com/usuarios
+{
+        "auth0id": "123123123",
+        "ciudad": "nueva",
+        "direccion": null,
+        "distrito": null,
+        "email": "nuevogabbb@gmail.com",
+        "fecha_registro": null,
+        "name": "NUEV APRUEBA07/02/2021",
+        "pais": null,
+        "phone": null,
+        "provincia": null,
+        "role": 2
+    }
+
+UPDATE by User.id 
+PUT jemmyperez.pythonanywhere.com/usuarios/2
+
+{
+        "ciudad": "actualizado",
+        "direccion": "actualizado",
+        "distrito": "actualizado",
+        "name": "NUEVO PARCHE",
+        "pais": "update test",
+        "phone": null,
+        "provincia": null,
+        "role": 1
+    }
+
+DELETE user.id 
+DELETE jemmyperez.pythonanywhere.com/usuarios/5
+
+
+
+
+
+## TAREAS ##  
+Flujo : 
+Como Dueño necesito registrar mis Clientes/Mascotas  Manualmente.
+Como Usuario necesito Registrar mis pets en la web.
+Como Dueño  registro manualmente Usuario y creo manualmente Veterinaria.
+Como Dueño necesito registrar mis Servicios.
+
+
+Agregar Auth0id a User. 
+AGregar foto , birthday a pet.
+Agregar Validacion a partir de ID auth0
+Agregar para Los Gets (de distintas Veterinarias)
+Agregar validacion para insertar servicios solo de la veterinaria correspondiente.
