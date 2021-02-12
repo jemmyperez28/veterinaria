@@ -34,11 +34,11 @@ app.register_blueprint(usuarios)
 app.register_blueprint(pets)
 app.register_blueprint(veterinarias)
 app.register_blueprint(uservets)
-#app.register_blueprint(services)
+app.register_blueprint(services)
 
 
 
 
         #Para Desarrollo
-if __name__ == '__main__':
-    app.run(debug = True)
+#if __name__ == '__main__':
+#    app.run(debug = True)
