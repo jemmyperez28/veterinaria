@@ -23,8 +23,6 @@ ma.init_app(app)
 migrate = Migrate(app, db)
 
 
-
-
 @app.errorhandler(AuthError)
 def handle_auth_error(ex):
     response = jsonify(ex.error)
@@ -36,7 +34,7 @@ app.register_blueprint(usuarios)
 app.register_blueprint(pets)
 app.register_blueprint(veterinarias)
 app.register_blueprint(uservets)
-app.register_blueprint(services)
+#app.register_blueprint(services)
 
 
 
