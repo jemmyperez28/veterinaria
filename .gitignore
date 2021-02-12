@@ -1,0 +1,8 @@
+/__pycache__
+/migrations
+/blueprints/__pycache__
+/config/__pycache__
+/env
+/funciones/__pycache__
+/migrations
+/config/settings.py
