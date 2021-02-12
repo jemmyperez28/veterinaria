@@ -15,7 +15,7 @@ class Usuario(db.Model):
     ciudad = db.Column(db.String(200) , nullable = True)
     distrito = db.Column(db.String(200) , nullable = True)
     direccion = db.Column(db.String(200) , nullable = True)
-    role = db.Column(db.Integer, nullable=False)
+    role = db.Column(db.Integer)
     pets = db.relationship('Pet',backref='pet_id')
     uservets = db.relationship('UserVet',backref='pet_id')
     fecha_registro = db.Column(db.DateTime,default=datetime.utcnow)
