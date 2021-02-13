@@ -1,13 +1,11 @@
 from flask import Blueprint
 from flask_app import cross_origin
 from flask import jsonify
-from funciones.funciones import requires_auth
+from funciones.funciones import requires_auth , decodificar_token
 from flask import request 
 from sqlalchemy import exc
 from config.db import db
 from config.keys import INIT_KEY
-
-
 
 from models import Usuario
 from schemas import UsuarioSchema
@@ -30,7 +28,7 @@ def public():
 def private():
     response = "Hello from a private endpoint! You need to be authenticated to see this."
     return jsonify(message=response)
-
+    
 
 #Usuarios
 
@@ -53,8 +51,7 @@ def new_user_public():
         direccion = None 
         fecha_registro = None
         nuevo_usuario = Usuario(name,email,phone,pais,provincia,ciudad,distrito,direccion,role,fecha_registro,auth0id)
-        
-                        
+                              
         try:
             db.session.add(nuevo_usuario)
             db.session.commit()
@@ -137,7 +134,6 @@ def get_usuario(id):
     result = Usuario_Schema.dump(usuario)
     return jsonify(result)
 
-
 @usuarios.route('/usuarios/<id>', methods=['PUT'])
 @cross_origin(headers=["Content-Type", "Authorization"])
 @requires_auth
@@ -177,8 +173,6 @@ def update_usuario(id):
                 'signature': mensaje 
             }
         return jsonify(message=response)
-
-
 
 @usuarios.route('/usuarios/<id>', methods=['DELETE'])
 @cross_origin(headers=["Content-Type", "Authorization"])

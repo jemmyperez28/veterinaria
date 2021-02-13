@@ -5,8 +5,9 @@ from funciones.funciones import requires_auth
 from flask import request
 from sqlalchemy import exc
 from config.db import db
+from funciones.funciones import decodificar_token
 
-from models import Veterinaria , UserVet
+from models import Veterinaria , UserVet , Usuario
 from schemas import VeterinariaSchema
 
 Veterinaria_Schema = VeterinariaSchema()
@@ -20,6 +21,11 @@ veterinarias = Blueprint('veterinarias', __name__)
 @cross_origin(headers=["Content-Type", "Authorization"])
 @requires_auth
 def create_veterinaria():
+
+    auth0cod = decodificar_token()
+    id_usuario = Usuario.query.with_entities(Usuario.id).filter_by(auth0id=auth0cod)
+    print(id_usuario)
+
     name = request.json['name']
     logo = request.json['logo']    
     ruc = request.json['ruc']
@@ -30,9 +36,8 @@ def create_veterinaria():
     ciudad = request.json['ciudad'] 
     Distrito = request.json['Distrito'] 
     Address = request.json['Address'] 
-    status = request.json['status'] 
-    fecha_registro = request.json['fecha_registro'] 
-    id_usuario = request.json['id_usuario']
+    status = 1
+    fecha_registro = None
     nuevo_veterinaria = Veterinaria(name,logo,ruc,telefono,whatsapp,pais,provincia,ciudad,Distrito,Address,status,fecha_registro)                           
     try:
         db.session.add(nuevo_veterinaria)
