@@ -69,6 +69,7 @@ def requires_auth(f):
                     audience=API_AUDIENCE,
                     issuer="https://"+AUTH0_DOMAIN+"/"
                 )
+                
             except jwt.ExpiredSignatureError:
                 raise AuthError({"code": "token_expired",
                                 "description": "token is expired"}, 401)
@@ -88,7 +89,6 @@ def requires_auth(f):
         raise AuthError({"code": "invalid_header",
                         "description": "Unable to find appropriate key"}, 401)
     return decorated
-
  
 def requires_scope(required_scope):
     """Determines if the required scope is present in the Access Token
@@ -104,3 +104,5 @@ def requires_scope(required_scope):
                     return True
     return False
    
+
+    

@@ -2,9 +2,12 @@ from flask import Blueprint
 from flask_app import cross_origin
 from flask import jsonify
 from funciones.funciones import requires_auth
-from flask import request
+from flask import request 
 from sqlalchemy import exc
 from config.db import db
+from config.keys import INIT_KEY
+
+
 
 from models import Usuario
 from schemas import UsuarioSchema
@@ -30,43 +33,53 @@ def private():
 
 
 #Usuarios
+
 @usuarios.route('/usuarios/new_user_public', methods=['POST'])
 @cross_origin(headers=["Content-Type", "Authorization"])
-#@requires_auth
 def new_user_public():
 
-    name = request.json['name']
-    email = request.json['email']
-    auth0id = request.json['auth0id']
-    role = request.json['role']
-    phone = None
-    pais = None
-    provincia = None
-    ciudad = None 
-    distrito = None 
-    direccion = None 
-    fecha_registro = None
-    nuevo_usuario = Usuario(name,email,phone,pais,provincia,ciudad,distrito,direccion,role,fecha_registro,auth0id)
-                       
-    try:
-        db.session.add(nuevo_usuario)
-        db.session.commit()
-        response = {
-                'code': '0',
-                'message': 'OK',
-                'signature': 'Se Agrego el Usuario con ID ' + auth0id  
-            }
-        return jsonify(message=response)
-    except exc.SQLAlchemyError as e:
-        mensaje = (str(e))
-        response = {
-                'code': '-1',
-                'message': 'Error',
-                'signature': mensaje 
-            }
-        #return jsonify(message=response)
-        return jsonify(message=response)
+    r = request.headers['Authorization']
 
+    if r == "Bearer " + str(INIT_KEY):
+        name = request.json['name']
+        email = request.json['email']
+        auth0id = request.json['auth0id']
+        role = request.json['role']
+        phone = None
+        pais = None
+        provincia = None
+        ciudad = None 
+        distrito = None 
+        direccion = None 
+        fecha_registro = None
+        nuevo_usuario = Usuario(name,email,phone,pais,provincia,ciudad,distrito,direccion,role,fecha_registro,auth0id)
+        
+                        
+        try:
+            db.session.add(nuevo_usuario)
+            db.session.commit()
+            response = {
+                    'code': '0',
+                    'message': 'OK',
+                    'signature': 'Se Agrego el Usuario con ID ' + auth0id  
+                }
+            return jsonify(message=response)
+        except exc.SQLAlchemyError as e:
+            mensaje = (str(e))
+            response = {
+                    'code': '-1',
+                    'message': 'Error',
+                    'signature': mensaje 
+                }
+            #return jsonify(message=response)
+            return jsonify(message=response)
+    else:
+        response = {
+                    'code': '0',
+                    'message': 'ERROR',
+                    'signature': 'TOKEN INICIAL INVALIDO'  
+                }
+        return jsonify(message=response)
 
 
 #Usuarios
